@@ -15,7 +15,7 @@ import 'package:myevent/model/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:myevent/services/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -245,8 +245,9 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> initUniLinks() async {
+    final appLinks = AppLinks();
     // Handle incoming links
-    _sub = uriLinkStream.listen((Uri? uri) {
+    _sub = appLinks.uriLinkStream.listen((Uri? uri) {
       if (uri != null) {
         List<String> pathSegments = uri.pathSegments;
         if (pathSegments.length == 3 &&
@@ -273,7 +274,7 @@ class _LoginState extends State<Login> {
 
     // Handle the initial link
     try {
-      final initialUri = await getInitialUri();
+      final initialUri = await appLinks.getInitialLink();
       if (initialUri != null) {
         List<String> pathSegments = initialUri.pathSegments;
         if (pathSegments.length == 3 &&
